@@ -8,3 +8,10 @@ js_features = ["sunlight", "improper_lighting", "ovulation", "excess_sleep", "ex
 "weather_temp", "irregular_meals", "headache_day", "noise", "emotional_changes", "drinking", "massage", "odors", 
 "medicine", "fatigue", "less_sleep", "other", "other.1", "menstruation", "stress", "total_triggers", "sleep", "rest", 
 "sound_sensitivity", "light_sensitivity", "helping_factors", "nausea_vomiting"]
+
+js_smote = ["smoking", "no_exercise", "improper_lighting", "exercise", "sunlight", "exercise.1", "caffeine", "cheese_chocolate",
+"ovulation", "excess_sleep", "travel", "overeating", "drinking", "massage", "noise", "weather_temp", "irregular_meals",
+"emotional_changes", "odors", "other.1", "other", "fatigue", "menstruation", "less_sleep", "headache_day", "stress",
+"medicine", "light_sensitivity", "sleep", "sound_sensitivity", "total_triggers", "rest", "helping_factors", "nausea_vomiting"]
+
+print(len(js_smote))

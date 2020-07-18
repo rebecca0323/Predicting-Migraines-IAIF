@@ -19,6 +19,7 @@ from imblearn import under_sampling, over_sampling
 from imblearn.over_sampling import SMOTE
 from sklearn.decomposition import PCA
 from sklearn.model_selection import RandomizedSearchCV
+from sklearn.feature_selection import RFE
 
 sns.set(style="white")
 sns.set(style="whitegrid", color_codes=True)
@@ -28,7 +29,7 @@ features, features_list, labels = utils.load_and_preprocess_data()
 # Using Skicit-learn to split data into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(features, labels, test_size=0.2, random_state=0)
 
-isSMOTE = False
+isSMOTE = True
 if isSMOTE: 
     os = SMOTE(random_state=0)
     os_data_X,os_data_y=os.fit_sample(X_train, y_train)
@@ -43,7 +44,7 @@ X_test = sc.transform(X_test)
 
 isPCA = False
 if isPCA:
-    pca = PCA(n_components=34) # 34 total features
+    pca = PCA(n_components=30) # 34 total features
     X_train = pca.fit_transform(X_train)
     X_test = pca.transform(X_test)
     explained_variance = pca.explained_variance_ratio_

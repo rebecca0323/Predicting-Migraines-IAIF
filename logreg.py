@@ -43,20 +43,15 @@ sc = StandardScaler()
 X_train = sc.fit_transform(X_train)
 X_test = sc.transform(X_test)
 
-isPCA = False
-if isPCA:
-    pca = PCA(n_components=34) # 34 total features
-    X_train = pca.fit_transform(X_train)
-    X_test = pca.transform(X_test)
-    explained_variance = pca.explained_variance_ratio_
-
 logit_model=sm.Logit(y_train, X_train)
 result=logit_model.fit()
 print(result.summary())
 
 #Logistic Regression model testing
 y_pred = logreg.predict(X_test)
-print('Accuracy of logistic regression classifier on test set: {:.4f}'.format(logreg.score(X_test, y_test)))
+print('Accuracy of logistic regression classifier on test set: {:.5f}'.format(logreg.score(X_test, y_test)))
+
+print(confusion_matrix(y_test,y_pred))
 
 #precision, recall, F-beta score
 print(classification_report(y_test, y_pred))

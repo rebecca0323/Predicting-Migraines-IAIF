@@ -14,7 +14,6 @@ from sklearn.preprocessing import normalize
 from sklearn import metrics
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
 from sklearn.preprocessing import StandardScaler
-from sklearn.feature_selection import SelectFromModel
 from imblearn import under_sampling, over_sampling
 from imblearn.over_sampling import SMOTE
 from sklearn.decomposition import PCA
@@ -37,6 +36,7 @@ if isSMOTE:
     y_train = pd.DataFrame(data=os_data_y)
     print("length of oversampled data is ",len(os_data_X))
     print(y_train[0].value_counts())
+    y_train = np.array(y_train).ravel()
 
 sc = StandardScaler()
 X_train = sc.fit_transform(X_train)
@@ -82,7 +82,15 @@ cv = 3, verbose=2, random_state=42, n_jobs = -1)
 
 clf = RandomForestClassifier(n_estimators=30, random_state=0)
 clf.fit(X_train, y_train)
-y_pred = clf.predict(X_test)
+
+isRFE = False
+if isRFE:
+    selector = RFE(clf, n_features_to_select=30)
+    selector.fit(X_train, y_train)
+
+    y_pred = selector.predict(X_test)
+else:
+    y_pred = clf.predict(X_test)
 
 print('Mean Absolute Error:', metrics.mean_absolute_error(y_test, y_pred))
 print('Mean Squared Error:', metrics.mean_squared_error(y_test, y_pred))

@@ -28,7 +28,7 @@ features, features_list, labels = utils.load_and_preprocess_data()
 # Using Skicit-learn to split data into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(features, labels, test_size=0.2, random_state=0)
 
-isSMOTE = False
+isSMOTE = True
 if isSMOTE: 
     os = SMOTE(random_state=0)
     os_data_X,os_data_y=os.fit_sample(X_train, y_train)
@@ -83,9 +83,9 @@ cv = 3, verbose=2, random_state=42, n_jobs = -1)
 clf = RandomForestClassifier(n_estimators=30, random_state=0)
 clf.fit(X_train, y_train)
 
-isRFE = False
+isRFE = True
 if isRFE:
-    selector = RFE(clf, n_features_to_select=30)
+    selector = RFE(clf, n_features_to_select=20)
     selector.fit(X_train, y_train)
 
     y_pred = selector.predict(X_test)
@@ -105,7 +105,7 @@ importances = list(clf.feature_importances_)
 feature_importances = [(feature, round(importance, 2)) for feature, importance in zip(features_list, importances)]
 feature_importances = sorted(feature_importances, key = lambda x: x[1], reverse = True)
 [print('Variable: {:20} Importance: {}'.format(*pair)) for pair in feature_importances]
-
+"""
 
 #Confusion matrix tells how many correct and incorrect predictions on training and testing data
 confusion_matrix = confusion_matrix(y_test, y_pred)
@@ -122,4 +122,3 @@ for i in range(confusion_matrix.shape[0]):
                 ha="center", va="center",
                 color="black" if  confusion_matrix[i, j] == 0 or confusion_matrix[i, j] < thresh else "white") 
 plt.savefig('Confusion Matrix')
-"""

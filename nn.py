@@ -12,12 +12,13 @@ from imblearn.over_sampling import SMOTE
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
 from keras.utils import plot_model
 import matplotlib.pyplot as plt
+import pickle
 
 features, features_list, labels = utils.load_and_preprocess_data()
 
 X_train, X_test, y_train, y_test = train_test_split(features, labels, test_size=0.2, random_state=0)
 
-isSMOTE = False
+isSMOTE = True
 if isSMOTE: 
     os = SMOTE(random_state=0)
     os_data_X,os_data_y=os.fit_sample(X_train, y_train)
@@ -53,7 +54,7 @@ y_pred = model.predict_classes(X_test)
 
 print(confusion_matrix(y_test,y_pred))
 
-print(classification_report(y_test, y_pred))
+print(classification_report(y_test, y_pred, digits=5))
 
 #Confusion matrix tells how many correct and incorrect predictions on training and testing data
 confusion_matrix = confusion_matrix(y_test, y_pred)
@@ -70,3 +71,6 @@ for i in range(confusion_matrix.shape[0]):
                 ha="center", va="center",
                 color="black" if  confusion_matrix[i, j] == 0 or confusion_matrix[i, j] < thresh else "white") 
 plt.savefig('Confusion Matrix')
+
+with open("NN.pkl", mode="wb") as opened_file:
+    pickle.dump(model, opened_file)

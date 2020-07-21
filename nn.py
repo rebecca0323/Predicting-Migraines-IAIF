@@ -10,6 +10,8 @@ from sklearn.model_selection import train_test_split
 from imblearn import under_sampling, over_sampling
 from imblearn.over_sampling import SMOTE
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
+from keras.utils import plot_model
+import matplotlib.pyplot as plt
 
 features, features_list, labels = utils.load_and_preprocess_data()
 
@@ -36,6 +38,8 @@ model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy']
 
 print(model.summary())
 
+plot_model(model, to_file='model.png')
+
 model.fit(X_train, y_train, epochs = 50, batch_size = 100, verbose=2)
 
 _, accuracy = model.evaluate(X_train, y_train)
@@ -50,3 +54,19 @@ y_pred = model.predict_classes(X_test)
 print(confusion_matrix(y_test,y_pred))
 
 print(classification_report(y_test, y_pred))
+
+#Confusion matrix tells how many correct and incorrect predictions on training and testing data
+confusion_matrix = confusion_matrix(y_test, y_pred)
+fig, ax = plt.subplots(figsize=(8, 6))
+ax.imshow(confusion_matrix,cmap=plt.cm.Blues)
+ax.grid(False)
+ax.xaxis.set(ticks=(0, 1), ticklabels=('Predicted No Migraines', 'Predicted Migraines'))
+ax.yaxis.set(ticks=(0, 1), ticklabels=('Actual No Migraines', 'Actual Migraines'))
+ax.set_ylim(1.5, -0.5)
+thresh = confusion_matrix.max() / 2.
+for i in range(confusion_matrix.shape[0]):
+    for j in range(confusion_matrix.shape[1]):
+        plt.text(j, i, format(confusion_matrix[i, j]),
+                ha="center", va="center",
+                color="black" if  confusion_matrix[i, j] == 0 or confusion_matrix[i, j] < thresh else "white") 
+plt.savefig('Confusion Matrix')

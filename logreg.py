@@ -54,7 +54,7 @@ print('Accuracy of logistic regression classifier on test set: {:.5f}'.format(lo
 print(confusion_matrix(y_test,y_pred))
 
 #precision, recall, F-beta score
-print(classification_report(y_test, y_pred))
+print(classification_report(y_test, y_pred, digits=5))
 
 """
 #Confusion matrix tells how many correct and incorrect predictions on training and testing data

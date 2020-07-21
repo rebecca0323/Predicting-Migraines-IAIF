@@ -28,7 +28,7 @@ features, features_list, labels = utils.load_and_preprocess_data()
 # Using Skicit-learn to split data into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(features, labels, test_size=0.2, random_state=0)
 
-isSMOTE = True
+isSMOTE = False
 if isSMOTE: 
     os = SMOTE(random_state=0)
     os_data_X,os_data_y=os.fit_sample(X_train, y_train)
@@ -97,11 +97,29 @@ print('Mean Squared Error:', metrics.mean_squared_error(y_test, y_pred))
 print('Root Mean Squared Error:', np.sqrt(metrics.mean_squared_error(y_test, y_pred)))
 
 print(confusion_matrix(y_test,y_pred))
-print(classification_report(y_test,y_pred))
+print(classification_report(y_test,y_pred, digits=5))
 print('Accuracy:', accuracy_score(y_test, y_pred))
-
+"""
 #Individual variable importance
 importances = list(clf.feature_importances_)
 feature_importances = [(feature, round(importance, 2)) for feature, importance in zip(features_list, importances)]
 feature_importances = sorted(feature_importances, key = lambda x: x[1], reverse = True)
 [print('Variable: {:20} Importance: {}'.format(*pair)) for pair in feature_importances]
+
+
+#Confusion matrix tells how many correct and incorrect predictions on training and testing data
+confusion_matrix = confusion_matrix(y_test, y_pred)
+fig, ax = plt.subplots(figsize=(8, 6))
+ax.imshow(confusion_matrix,cmap=plt.cm.Blues)
+ax.grid(False)
+ax.xaxis.set(ticks=(0, 1), ticklabels=('Predicted No Migraines', 'Predicted Migraines'))
+ax.yaxis.set(ticks=(0, 1), ticklabels=('Actual No Migraines', 'Actual Migraines'))
+ax.set_ylim(1.5, -0.5)
+thresh = confusion_matrix.max() / 2.
+for i in range(confusion_matrix.shape[0]):
+    for j in range(confusion_matrix.shape[1]):
+        plt.text(j, i, format(confusion_matrix[i, j]),
+                ha="center", va="center",
+                color="black" if  confusion_matrix[i, j] == 0 or confusion_matrix[i, j] < thresh else "white") 
+plt.savefig('Confusion Matrix')
+"""

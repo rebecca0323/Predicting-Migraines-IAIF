@@ -20,7 +20,7 @@ if isSMOTE:
 js_divergences = {}
 
 for i in range(len(features_list)):
-    js_divergences[features_list[i]] = jensenshannon(features[:, i], labels)
+    js_divergences[features_list[i]] = jensenshannon(features[:, i], labels) ** 2 # jensen shannon returns distance, to get divergence, we must square the distanc
 
 for feature in sorted(js_divergences, key=js_divergences.get, reverse=True):
     print(feature, js_divergences[feature])
